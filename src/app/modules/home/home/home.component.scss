@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.template {
+  min-height: 9rem;
+}
+
+.knowledge {
+  min-height: 12rem;
+}
+
+.user-content {
+  min-height: 3rem;
+}
+
+.result-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
