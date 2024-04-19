@@ -1,7 +1,6 @@
-export interface NlpRequest {
+import { PromptRequest } from './prompt-request';
+
+export interface NlpRequest extends PromptRequest {
   name: string;
   documentList: number[];
-  template: string;
-  knowledge: string;
-  userContent: string;
 }

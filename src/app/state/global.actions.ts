@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { NlpAccuracy } from '../core/models/nlp-accuracy';
 import { NlpRequest } from '../core/models/nlp-request';
 import { NlpResult } from '../core/models/nlp-result';
+import { PromptRequest } from '../core/models/prompt-request';
 
 export const processNlp = createAction(
   '[NLP] Process NLP',
@@ -53,4 +54,18 @@ export const getNlpAccuracyLatestSuccess = createAction(
 
 export const getNlpAccuracyLatestFailure = createAction(
   '[NLP] Get NLP Accuracy Latest Failure'
+);
+
+export const processPromptFinetuning = createAction(
+  '[Prompt] Process Prompt Fine-tuning',
+  props<{ request: PromptRequest }>()
+);
+
+export const processPromptFinetuningSuccess = createAction(
+  '[Prompt] Process Prompt Fine-tuning Success',
+  props<{ prompt: string }>()
+);
+
+export const processPromptFinetuningFailure = createAction(
+  '[Prompt] Process Prompt Fine-tuning Failure'
 );

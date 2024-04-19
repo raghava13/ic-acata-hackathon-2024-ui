@@ -1,1 +1,86 @@
-<p>prompt-tuning works!</p>
+<div class="container">
+  <h2 mat-dialog-title>Prompt Fine-tuning</h2>
+  <form [formGroup]="formGroup" (submit)="handleProcess()">
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Template</mat-label>
+        <textarea
+          matInput
+          placeholder="Prompt Template"
+          formControlName="template"
+          class="template"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Context</mat-label>
+        <textarea
+          matInput
+          placeholder="Context"
+          formControlName="context"
+          class="context"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Knowledge</mat-label>
+        <textarea
+          matInput
+          placeholder="Elements Knowledge"
+          formControlName="knowledge"
+          class="knowledge"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>User Content</mat-label>
+        <input
+          matInput
+          placeholder="User Content"
+          formControlName="userContent"
+          class="user-content"
+        />
+      </mat-form-field>
+    </div>
+    <div class="action-container">
+      <div class="button-container">
+        <button
+          type="submit"
+          mat-stroked-button
+          color="primary"
+          [disabled]="!formGroup.valid"
+        >
+          Process
+        </button>
+        <button
+          type="button"
+          mat-stroked-button
+          color="accent"
+          (click)="handleReset()"
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          mat-stroked-button
+          color="warn"
+          (click)="handleClear()"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="response">
+    <p>
+      {{ selectPrompt | async }}
+    </p>
+    @if( selectPrompt | async) {
+    <button
+      mat-mini-fab
+      color="primary"
+      [cdkCopyToClipboard]="(selectPrompt | async) || ''"
+      title="Copy Prompt"
+    >
+      <mat-icon>content_copy</mat-icon>
+    </button>
+    }
+  </div>
+</div>

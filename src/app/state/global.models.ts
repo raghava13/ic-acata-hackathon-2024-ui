@@ -6,4 +6,5 @@ export interface GlobalState {
   nlpResult: NlpResult[];
   nlpAccuracy: NlpAccuracy[];
   nlpAccuracyLatest: NlpAccuracy[];
+  prompt: string;
 }

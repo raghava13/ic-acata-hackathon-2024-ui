@@ -5,4 +5,5 @@ export const initialGlobalState: GlobalState = {
   nlpResult: [],
   nlpAccuracy: [],
   nlpAccuracyLatest: [],
+  prompt: '',
 };

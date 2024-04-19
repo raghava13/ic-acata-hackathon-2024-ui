@@ -15,6 +15,9 @@ import {
   processNlp,
   processNlpFailure,
   processNlpSuccess,
+  processPromptFinetuning,
+  processPromptFinetuningFailure,
+  processPromptFinetuningSuccess,
 } from './global.actions';
 
 @Injectable()
@@ -68,6 +71,18 @@ export class GlobalEffects {
             of(getNlpAccuracyLatestSuccess({ nlpAccuracyLatest }))
           ),
           catchError(() => of(getNlpAccuracyLatestFailure()))
+        )
+      )
+    );
+  });
+
+  processPromptFinetuning = createEffect(() => {
+    return this.actions.pipe(
+      ofType(processPromptFinetuning),
+      switchMap(({ request }) =>
+        this.nlpService.processPromptFinetuning(request).pipe(
+          switchMap((prompt) => of(processPromptFinetuningSuccess({ prompt }))),
+          catchError(() => of(processPromptFinetuningFailure()))
         )
       )
     );

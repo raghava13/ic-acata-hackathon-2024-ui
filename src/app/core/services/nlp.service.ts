@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { NlpAccuracy } from '../models/nlp-accuracy';
 import { NlpRequest } from '../models/nlp-request';
 import { NlpResult } from '../models/nlp-result';
+import { PromptRequest } from '../models/prompt-request';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +35,10 @@ export class NlpService {
     if (elementName) url += `/${elementName}`;
     console.log('raghava', url);
     return this.httpClient.get<NlpAccuracy[]>(url);
+  }
+
+  processPromptFinetuning(request: PromptRequest): Observable<string> {
+    const url = `${this.baseURL}/nlp/prompt-tuning`;
+    return this.httpClient.post<string>(url, request);
   }
 }

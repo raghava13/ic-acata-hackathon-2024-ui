@@ -23,3 +23,8 @@ export const selectNlpAccuracyLatest = createSelector(
   selectGlobalFeatureState,
   (state) => state.nlpAccuracyLatest
 );
+
+export const selectPrompt = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.prompt
+);

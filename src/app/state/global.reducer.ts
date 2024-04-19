@@ -12,6 +12,8 @@ import {
   processNlp,
   processNlpFailure,
   processNlpSuccess,
+  processPromptFinetuningFailure,
+  processPromptFinetuningSuccess,
 } from './global.actions';
 import { GlobalState } from './global.models';
 import { initialGlobalState } from './global.state';
@@ -52,6 +54,14 @@ export const gloablReducer = createImmerReducer<GlobalState>(
   }),
   on(getNlpAccuracyLatestFailure, (state) => {
     state.nlpAccuracyLatest = [];
+    return state;
+  }),
+  on(processPromptFinetuningSuccess, (state, { prompt }) => {
+    state.prompt = prompt;
+    return state;
+  }),
+  on(processPromptFinetuningFailure, (state) => {
+    state.prompt = '';
     return state;
   })
 );

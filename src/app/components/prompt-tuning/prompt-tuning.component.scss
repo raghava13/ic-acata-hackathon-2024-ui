@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.template {
+  min-height: 6rem;
+}
+
+.context {
+  min-height: 12rem;
+}
+
+.knowledge {
+  min-height: 4rem;
+}
+
+.user-content {
+  min-height: 2rem;
+}
+
+.result-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.response {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #c4c6d0;
+}
+
+h2 {
+  margin-top: 0;
+}
