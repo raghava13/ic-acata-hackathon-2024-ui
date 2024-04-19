@@ -4,6 +4,10 @@ import { NlpRequest } from '../core/models/nlp-request';
 import { NlpResult } from '../core/models/nlp-result';
 import { PromptRequest } from '../core/models/prompt-request';
 
+export const showSpinner = createAction('[Spinner] Show Spinner');
+
+export const hideSpinner = createAction('[Spinner] Hide Spinner');
+
 export const processNlp = createAction(
   '[NLP] Process NLP',
   props<{ request: NlpRequest }>()

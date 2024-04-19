@@ -9,17 +9,29 @@ import {
   getNlpAccuracySuccess,
   getNlpResultFailure,
   getNlpResultSuccess,
+  hideSpinner,
   processNlp,
   processNlpFailure,
   processNlpSuccess,
   processPromptFinetuningFailure,
   processPromptFinetuningSuccess,
+  showSpinner,
 } from './global.actions';
 import { GlobalState } from './global.models';
 import { initialGlobalState } from './global.state';
 
 export const gloablReducer = createImmerReducer<GlobalState>(
   initialGlobalState,
+  on(showSpinner, (state) => {
+    state.spinner += 1;
+    return state;
+  }),
+  on(hideSpinner, (state) => {
+    if (state.spinner > 0) {
+      state.spinner -= 1;
+    }
+    return state;
+  }),
   on(processNlp, (state) => {
     state.nlpId = 0;
     return state;

@@ -4,6 +4,11 @@ import { GlobalState } from './global.models';
 export const selectGlobalFeatureState =
   createFeatureSelector<GlobalState>('global');
 
+export const selectSpinner = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.spinner
+);
+
 export const selectNlpId = createSelector(
   selectGlobalFeatureState,
   (state) => state.nlpId

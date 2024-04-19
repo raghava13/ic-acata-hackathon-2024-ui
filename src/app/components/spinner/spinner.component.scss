@@ -1,0 +1,5 @@
+/* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+::ng-deep .spinner-dialog > .mat-mdc-dialog-container {
+  --mdc-dialog-container-elevation-shadow: none;
+  --mdc-dialog-container-color: transparent;
+}
