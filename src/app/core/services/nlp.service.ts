@@ -14,9 +14,9 @@ export class NlpService {
     this.baseURL = 'http://127.0.0.1:8000';
   }
 
-  processNlp(request: NlpRequest) {
+  processNlp(request: NlpRequest): Observable<number> {
     const url = `${this.baseURL}/nlp/process`;
-    return this.httpClient.post(url, request);
+    return this.httpClient.post<number>(url, request);
   }
 
   getNlpResult(nlpId: number): Observable<NlpResult[]> {

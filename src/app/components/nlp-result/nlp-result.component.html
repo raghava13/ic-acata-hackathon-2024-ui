@@ -1,31 +1,36 @@
 <div class="container">
-  <table mat-table [dataSource]="dataSource">
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
+  <h3>Result</h3>
+  <table mat-table [dataSource]="(selectNlpResult | async) || []">
+    <!-- <ng-container matColumnDef="nlpDocumentId">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.nlpDocumentId }}</td>
+    </ng-container> -->
+    <!-- 
+    <ng-container matColumnDef="nlpId">
+      <th mat-header-cell *matHeaderCellDef>NLP ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.nlpId }}</td>
+    </ng-container> -->
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
-      <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+    <ng-container matColumnDef="documentId">
+      <th mat-header-cell *matHeaderCellDef>Document ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.documentId }}</td>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    <ng-container matColumnDef="response">
+      <th mat-header-cell *matHeaderCellDef>Response</th>
+      <td mat-cell *matCellDef="let element">
+        <a (click)="openDialog(element.response)">
+          {{ element.response }}
+        </a>
+      </td>
     </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef>Weight</th>
-      <td mat-cell *matCellDef="let element">{{ element.weight }}</td>
-    </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef>Symbol</th>
-      <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
-    </ng-container>
+    <!-- <ng-container matColumnDef="createdDate">
+      <th mat-header-cell *matHeaderCellDef>Created Date</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.createdDate | date : "MM/dd/yyy" }}
+      </td>
+    </ng-container> -->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

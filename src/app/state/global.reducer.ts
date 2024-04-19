@@ -9,12 +9,27 @@ import {
   getNlpAccuracySuccess,
   getNlpResultFailure,
   getNlpResultSuccess,
+  processNlp,
+  processNlpFailure,
+  processNlpSuccess,
 } from './global.actions';
 import { GlobalState } from './global.models';
 import { initialGlobalState } from './global.state';
 
 export const gloablReducer = createImmerReducer<GlobalState>(
   initialGlobalState,
+  on(processNlp, (state) => {
+    state.nlpId = 0;
+    return state;
+  }),
+  on(processNlpSuccess, (state, { nlpId }) => {
+    state.nlpId = nlpId;
+    return state;
+  }),
+  on(processNlpFailure, (state) => {
+    state.nlpId = 0;
+    return state;
+  }),
   on(getNlpResultSuccess, (state, { nlpResult }) => {
     state.nlpResult = nlpResult;
     return state;

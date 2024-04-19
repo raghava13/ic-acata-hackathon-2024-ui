@@ -9,10 +9,15 @@
   flex-direction: column;
 }
 
+.action-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .button-container {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
 }
 
 .template {

@@ -1,3 +1,5 @@
+@use "../../../theme/color-variables.scss" as c;
+
 .container {
   border-radius: 12px;
   border: 1px solid #c4c6d0;
@@ -6,4 +8,13 @@
 
 table {
   width: 100%;
+}
+
+h3 {
+  text-align: center;
+}
+
+a {
+  cursor: pointer;
+  color: c.$ic-blue;
 }

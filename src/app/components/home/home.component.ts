@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   FormControl,
@@ -11,7 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
+import { Observable, firstValueFrom } from 'rxjs';
 import { NlpRequest } from '../../core/models/nlp-request';
+import {
+  getNlpAccuracy,
+  getNlpResult,
+  processNlp,
+} from '../../state/global.actions';
+import { selectNlpId } from '../../state/global.selectors';
 import { NlpAccuracyComponent } from '../nlp-accuracy/nlp-accuracy.component';
 import { NlpResultComponent } from '../nlp-result/nlp-result.component';
 
@@ -21,6 +29,7 @@ import { NlpResultComponent } from '../nlp-result/nlp-result.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   imports: [
+    AsyncPipe,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -46,6 +55,8 @@ export class HomeComponent {
 
   userContent: string;
 
+  selectNlpId: Observable<number>;
+
   constructor(private store: Store) {
     this.template = `You are a Clinical Genomic Data Curator trained in medical oncology analyzing the clinical notes of patients. 
     Analyze the clinical notes given in the "Context" and make use of "Knowledge". 
@@ -60,14 +71,15 @@ export class HomeComponent {
     
     Site of Biopsy: A biopsy is a procedure where cells or tissue are removed for examination to determine a diagnosis. The site of the biopsy is the anatomical location where the biopsy was performed or the anatomical location where the tissue was removed from.`;
 
-    this.userContent = `Extract cancer stage, radiation type, site of biopsy`;
+    // this.userContent = `Extract cancer stage, radiation type, site of biopsy`;
+    this.userContent = `Extract following elements date of biopsy, specimen collection date`;
 
     this.formGroup = new FormGroup({
       name: new FormControl<string>('Radiation Test 1', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      documentList: new FormControl<number[]>([736353, 711912], {
+      documentList: new FormControl<number[]>([736353], {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -84,26 +96,8 @@ export class HomeComponent {
         validators: [Validators.required],
       }),
     });
-  }
 
-  handleSubmit() {
-    const request = this.formGroup.value as NlpRequest;
-    console.log('raghava', request);
-    // this.store.dispatch(processNLP({ request }));
-  }
-
-  handleReset() {
-    this.formGroup.reset();
-  }
-
-  handleClear() {
-    this.formGroup.patchValue({
-      name: '',
-      documentList: [],
-      template: '',
-      knowledge: '',
-      userContent: '',
-    });
+    this.selectNlpId = this.store.select(selectNlpId);
   }
 
   removeDocumentId(documentId: number) {
@@ -125,5 +119,32 @@ export class HomeComponent {
 
     // Clear the input value
     event.chipInput!.clear();
+  }
+
+  handleReset() {
+    this.formGroup.reset();
+  }
+
+  handleClear() {
+    this.formGroup.patchValue({
+      name: '',
+      documentList: [],
+      template: '',
+      knowledge: '',
+      userContent: '',
+    });
+  }
+
+  handleProcess() {
+    const request = this.formGroup.value as NlpRequest;
+    this.store.dispatch(processNlp({ request }));
+  }
+
+  async handleRefresh() {
+    const nlpId = await firstValueFrom(this.store.select(selectNlpId));
+    if (nlpId) {
+      this.store.dispatch(getNlpResult({ nlpId }));
+      this.store.dispatch(getNlpAccuracy({ nlpId }));
+    }
   }
 }

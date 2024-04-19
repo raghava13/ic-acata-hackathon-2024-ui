@@ -26,7 +26,7 @@ export class GlobalEffects {
       ofType(processNlp),
       switchMap(({ request }) =>
         this.nlpService.processNlp(request).pipe(
-          switchMap(() => of(processNlpSuccess())),
+          switchMap((nlpId) => of(processNlpSuccess({ nlpId }))),
           catchError(() => of(processNlpFailure()))
         )
       )

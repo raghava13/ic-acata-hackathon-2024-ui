@@ -8,7 +8,10 @@ export const processNlp = createAction(
   props<{ request: NlpRequest }>()
 );
 
-export const processNlpSuccess = createAction('[NLP] Process NLP Success');
+export const processNlpSuccess = createAction(
+  '[NLP] Process NLP Success',
+  props<{ nlpId: number }>()
+);
 
 export const processNlpFailure = createAction('[NLP] Process NLP Failure');
 
