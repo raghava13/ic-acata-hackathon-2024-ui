@@ -3,9 +3,18 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, of, switchMap } from 'rxjs';
 import { NlpService } from '../core/services/nlp.service';
 import {
-  processNLP,
-  processNLPFailure,
-  processNLPSuccess,
+  getNlpAccuracy,
+  getNlpAccuracyFailure,
+  getNlpAccuracyLatest,
+  getNlpAccuracyLatestFailure,
+  getNlpAccuracyLatestSuccess,
+  getNlpAccuracySuccess,
+  getNlpResult,
+  getNlpResultFailure,
+  getNlpResultSuccess,
+  processNlp,
+  processNlpFailure,
+  processNlpSuccess,
 } from './global.actions';
 
 @Injectable()
@@ -14,11 +23,51 @@ export class GlobalEffects {
 
   processNLP = createEffect(() => {
     return this.actions.pipe(
-      ofType(processNLP),
+      ofType(processNlp),
       switchMap(({ request }) =>
-        this.nlpService.processNLP(request).pipe(
-          switchMap(() => of(processNLPSuccess())),
-          catchError(() => of(processNLPFailure()))
+        this.nlpService.processNlp(request).pipe(
+          switchMap(() => of(processNlpSuccess())),
+          catchError(() => of(processNlpFailure()))
+        )
+      )
+    );
+  });
+
+  getNlpResult = createEffect(() => {
+    return this.actions.pipe(
+      ofType(getNlpResult),
+      switchMap(({ nlpId }) =>
+        this.nlpService.getNlpResult(nlpId).pipe(
+          switchMap((nlpResult) => of(getNlpResultSuccess({ nlpResult }))),
+          catchError(() => of(getNlpResultFailure()))
+        )
+      )
+    );
+  });
+
+  getNlpAccuracy = createEffect(() => {
+    return this.actions.pipe(
+      ofType(getNlpAccuracy),
+      switchMap(({ nlpId }) =>
+        this.nlpService.getNlpAccuracy(nlpId).pipe(
+          switchMap((nlpAccuracy) =>
+            of(getNlpAccuracySuccess({ nlpAccuracy }))
+          ),
+          catchError(() => of(getNlpAccuracyFailure()))
+        )
+      )
+    );
+  });
+
+  getNlpAccuracyLatest = createEffect(() => {
+    return this.actions.pipe(
+      ofType(getNlpAccuracyLatest),
+      switchMap(({ elementName }) =>
+        this.nlpService.getNlpAccuracyLatest(elementName).pipe(
+          switchMap((nlpAccuracyLatest) =>
+            of(getNlpAccuracyLatestSuccess({ nlpAccuracyLatest }))
+          ),
+          catchError(() => of(getNlpAccuracyLatestFailure()))
         )
       )
     );

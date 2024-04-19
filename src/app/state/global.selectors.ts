@@ -4,7 +4,17 @@ import { GlobalState } from './global.models';
 export const selectGlobalFeatureState =
   createFeatureSelector<GlobalState>('global');
 
-export const selectDocuments = createSelector(
+export const selectNlpResult = createSelector(
   selectGlobalFeatureState,
-  (state) => state.documents
+  (state) => state.nlpResult
+);
+
+export const selectNlpAccuracy = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.nlpAccuracy
+);
+
+export const selectNlpAccuracyLatest = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.nlpAccuracyLatest
 );
