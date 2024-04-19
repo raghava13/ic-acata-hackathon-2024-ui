@@ -2,27 +2,29 @@
   <div class="header">
     <h3>NLP Accuracy Report</h3>
     <div class="header-content">
-      <mat-checkbox
-        #all
-        (change)="handleChange($event.checked); multiSelect.value = ''"
-        [checked]="true"
-        >All Elements</mat-checkbox
-      >
-      <mat-form-field appearance="outline">
-        <mat-label>Elements</mat-label>
-        <mat-select
-          [disabled]="all.checked"
-          (selectionChange)="handleSelectionChange($event.value)"
-          #multiSelect
+      <div class="content">
+        <mat-checkbox
+          #all
+          (change)="handleChange($event.checked); multiSelect.value = ''"
+          [checked]="true"
+          >All Elements</mat-checkbox
         >
-          @for (element of element_list; track element) {
-          <mat-option [value]="element">{{ element }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Elements</mat-label>
+          <mat-select
+            [disabled]="all.checked"
+            (selectionChange)="handleSelectionChange($event.value)"
+            #multiSelect
+          >
+            @for (element of element_list; track element) {
+            <mat-option [value]="element">{{ element }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <app-nlp-chart [isElement]="all.checked" />
     </div>
   </div>
-  <div class="chart"></div>
   <div class="content">
     <table mat-table [dataSource]="(selectNlpAccuracyLatest | async) || []">
       <!-- <ng-container matColumnDef="nlpAccuracyId">

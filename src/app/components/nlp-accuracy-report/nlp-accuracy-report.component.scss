@@ -2,8 +2,13 @@
   .header {
     .header-content {
       display: flex;
-      align-items: baseline;
-      gap: 2rem;
+      justify-content: space-between;
+
+      .content {
+        display: flex;
+        align-items: baseline;
+        gap: 2rem;
+      }
     }
   }
 }

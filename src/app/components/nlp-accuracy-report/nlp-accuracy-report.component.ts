@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { NlpAccuracy } from '../../core/models/nlp-accuracy';
 import { getNlpAccuracyLatest } from '../../state/global.actions';
 import { selectNlpAccuracyLatest } from '../../state/global.selectors';
+import { NlpChartComponent } from '../nlp-chart/nlp-chart.component';
 
 @Component({
   selector: 'app-nlp-accuracy-report',
@@ -24,6 +25,7 @@ import { selectNlpAccuracyLatest } from '../../state/global.selectors';
     MatInputModule,
     FormsModule,
     MatCheckboxModule,
+    NlpChartComponent,
   ],
   templateUrl: './nlp-accuracy-report.component.html',
   styleUrl: './nlp-accuracy-report.component.scss',
