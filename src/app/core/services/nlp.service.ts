@@ -30,8 +30,9 @@ export class NlpService {
   }
 
   getNlpAccuracyLatest(elementName?: string): Observable<NlpAccuracy[]> {
-    let url = `${this.baseURL}/nlp/accuracy/latest`;
-    if (elementName) url + `/${elementName}`;
+    let url = `${this.baseURL}/nlp/latest/accuracy`;
+    if (elementName) url += `/${elementName}`;
+    console.log('raghava', url);
     return this.httpClient.get<NlpAccuracy[]>(url);
   }
 }

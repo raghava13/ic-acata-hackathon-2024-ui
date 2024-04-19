@@ -6,20 +6,24 @@
     >IC ACATA HACKATHON 2024</a
   >
   <span class="example-spacer"></span>
-  <!-- <button
+  <button
     mat-icon-button
     class="example-icon favorite-icon"
     aria-label="Example icon-button with heart icon"
+    title="Accuracy Report"
+    [routerLink]="['report']"
   >
-    <mat-icon>favorite</mat-icon>
+    <mat-icon>summarize</mat-icon>
   </button>
   <button
     mat-icon-button
     class="example-icon"
     aria-label="Example icon-button with share icon"
+    title="Prompt Fine-tune"
+    [routerLink]="['prompt']"
   >
-    <mat-icon>share</mat-icon>
-  </button> -->
+    <mat-icon>tune</mat-icon>
+  </button>
 </mat-toolbar>
 <div class="container">
   <router-outlet />

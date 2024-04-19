@@ -1,14 +1,21 @@
 .container {
   padding: 1.5rem;
   padding-top: 0;
+  overflow: auto;
+  max-height: 30rem;
+  // max-width: 30rem;
+  border-radius: 12px;
+  border: 1px solid #c4c6d0;
+  padding: 0.25rem;
+  margin: 1.5rem;
 
-  h3 {
+  h2 {
     text-align: center;
   }
 
   .json-container {
-    border-radius: 12px;
-    border: 1px solid #c4c6d0;
-    padding: 0.25rem;
+    padding: 1rem;
+    padding-top: 0;
+    font-size: 1.5rem;
   }
 }
