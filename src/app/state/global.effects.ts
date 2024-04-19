@@ -3,6 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, of, switchMap } from 'rxjs';
 import { NlpService } from '../core/services/nlp.service';
 import {
+  getDocuments,
+  getDocumentsFailure,
+  getDocumentsSuccess,
   getNlpAccuracy,
   getNlpAccuracyFailure,
   getNlpAccuracyLatest,
@@ -83,6 +86,18 @@ export class GlobalEffects {
         this.nlpService.processPromptFinetuning(request).pipe(
           switchMap((prompt) => of(processPromptFinetuningSuccess({ prompt }))),
           catchError(() => of(processPromptFinetuningFailure()))
+        )
+      )
+    );
+  });
+
+  getDocuments = createEffect(() => {
+    return this.actions.pipe(
+      ofType(getDocuments),
+      switchMap(() =>
+        this.nlpService.getDocuments().pipe(
+          switchMap((documents) => of(getDocumentsSuccess({ documents }))),
+          catchError(() => of(getDocumentsFailure()))
         )
       )
     );

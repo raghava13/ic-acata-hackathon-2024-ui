@@ -3,6 +3,8 @@
 import { on } from '@ngrx/store';
 import { createImmerReducer } from 'ngrx-immer/store';
 import {
+  getDocumentsFailure,
+  getDocumentsSuccess,
   getNlpAccuracyFailure,
   getNlpAccuracyLatestFailure,
   getNlpAccuracyLatestSuccess,
@@ -74,6 +76,14 @@ export const gloablReducer = createImmerReducer<GlobalState>(
   }),
   on(processPromptFinetuningFailure, (state) => {
     state.prompt = '';
+    return state;
+  }),
+  on(getDocumentsSuccess, (state, { documents }) => {
+    state.documents = documents;
+    return state;
+  }),
+  on(getDocumentsFailure, (state) => {
+    state.documents = [];
     return state;
   })
 );

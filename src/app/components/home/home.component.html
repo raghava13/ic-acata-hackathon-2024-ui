@@ -5,29 +5,41 @@
         <mat-label>Name</mat-label>
         <input matInput placeholder="Name" formControlName="name" />
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Document List</mat-label>
-        <mat-chip-grid
-          #chipGrid
-          aria-label="Enter Document ID"
-          formControlName="documentList"
+      <div class="document-container">
+        <mat-form-field appearance="outline" class="document-field">
+          <mat-label>Document List</mat-label>
+          <mat-chip-grid
+            #chipGrid
+            aria-label="Enter Document ID"
+            formControlName="documentList"
+          >
+            @for (documentId of formGroup.value.documentList; track documentId)
+            {
+            <mat-chip-row (removed)="removeDocumentId(documentId)">
+              {{ documentId }}
+              <button matChipRemove aria-label="'remove ' + documentId">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            type="number"
+            placeholder="New Document ID..."
+            [matChipInputFor]="chipGrid"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-form-field>
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          (click)="handleSearch()"
         >
-          @for (documentId of formGroup.value.documentList; track documentId) {
-          <mat-chip-row (removed)="removeDocumentId(documentId)">
-            {{ documentId }}
-            <button matChipRemove aria-label="'remove ' + documentId">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-          }
-        </mat-chip-grid>
-        <input
-          type="number"
-          placeholder="New Document ID..."
-          [matChipInputFor]="chipGrid"
-          (matChipInputTokenEnd)="add($event)"
-        />
-      </mat-form-field>
+          Search
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
       <mat-form-field appearance="outline">
         <mat-label>Template</mat-label>
         <textarea

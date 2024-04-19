@@ -33,3 +33,8 @@ export const selectPrompt = createSelector(
   selectGlobalFeatureState,
   (state) => state.prompt
 );
+
+export const selectDocuments = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.documents
+);

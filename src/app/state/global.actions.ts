@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { Document } from '../core/models/document';
 import { NlpAccuracy } from '../core/models/nlp-accuracy';
 import { NlpRequest } from '../core/models/nlp-request';
 import { NlpResult } from '../core/models/nlp-result';
@@ -72,4 +73,15 @@ export const processPromptFinetuningSuccess = createAction(
 
 export const processPromptFinetuningFailure = createAction(
   '[Prompt] Process Prompt Fine-tuning Failure'
+);
+
+export const getDocuments = createAction('[Document] Get Documents');
+
+export const getDocumentsSuccess = createAction(
+  '[Document] Get Documents Success',
+  props<{ documents: Document[] }>()
+);
+
+export const getDocumentsFailure = createAction(
+  '[Document] Get Documents Failure'
 );

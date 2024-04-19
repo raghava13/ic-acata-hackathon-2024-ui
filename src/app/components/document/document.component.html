@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Documents</h2>
+<mat-dialog-content class="mat-typography">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        type="search"
+        matInput
+        placeholder="Search Document ID, Patient ID, and Document Type"
+      />
+    </mat-form-field>
+  </div>
+  <div class="table">
+    <table mat-table [dataSource]="(selectDocuments | async) || []">
+      <ng-container matColumnDef="documentId">
+        <th mat-header-cell *matHeaderCellDef>Document ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.documentId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="patientId">
+        <th mat-header-cell *matHeaderCellDef>Patient ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.patientId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="add">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="handleAddDocument(element.documentId)"
+          >
+            Add
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="documentList" cdkFocusInitial>
+    OK
+  </button>
+</mat-dialog-actions>

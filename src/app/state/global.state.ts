@@ -7,4 +7,5 @@ export const initialGlobalState: GlobalState = {
   nlpAccuracy: [],
   nlpAccuracyLatest: [],
   prompt: '',
+  documents: [],
 };

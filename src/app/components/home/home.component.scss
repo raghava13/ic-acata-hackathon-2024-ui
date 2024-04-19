@@ -38,3 +38,13 @@
   flex-direction: column;
   gap: 2rem;
 }
+
+.document-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  .document-field {
+    width: 100%;
+  }
+}

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Document } from '../models/document';
 import { NlpAccuracy } from '../models/nlp-accuracy';
 import { NlpRequest } from '../models/nlp-request';
 import { NlpResult } from '../models/nlp-result';
@@ -40,5 +41,10 @@ export class NlpService {
   processPromptFinetuning(request: PromptRequest): Observable<string> {
     const url = `${this.baseURL}/nlp/prompt-tuning`;
     return this.httpClient.post<string>(url, request);
+  }
+
+  getDocuments(): Observable<Document[]> {
+    const url = `${this.baseURL}/document`;
+    return this.httpClient.get<Document[]>(url);
   }
 }

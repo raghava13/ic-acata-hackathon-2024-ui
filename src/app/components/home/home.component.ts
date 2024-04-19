@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -20,6 +21,7 @@ import {
   processNlp,
 } from '../../state/global.actions';
 import { selectNlpId } from '../../state/global.selectors';
+import { DocumentComponent } from '../document/document.component';
 import { NlpAccuracyComponent } from '../nlp-accuracy/nlp-accuracy.component';
 import { NlpResultComponent } from '../nlp-result/nlp-result.component';
 
@@ -57,7 +59,7 @@ export class HomeComponent {
 
   selectNlpId: Observable<number>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private dialog: MatDialog) {
     this.template = `You are a Clinical Genomic Data Curator trained in medical oncology analyzing the clinical notes of patients. 
     Analyze the clinical notes given in the "Context" and make use of "Knowledge". 
     Reply "["None"]" when not found. No additional information is required. 
@@ -109,16 +111,32 @@ export class HomeComponent {
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    const documetnId = parseInt(value);
-
-    // Add our keyword
-    if (!isNaN(documetnId)) {
-      this.formGroup.value.documentList?.push(documetnId);
+    const documentId = parseInt(value);
+    if (!isNaN(documentId)) {
+      const index = this.formGroup.value.documentList?.findIndex(
+        (docId) => docId == documentId
+      );
+      if (index == -1) {
+        this.formGroup.value.documentList?.push(documentId);
+      }
     }
-
-    // Clear the input value
     event.chipInput!.clear();
+  }
+
+  async handleSearch() {
+    const documentListNew = await firstValueFrom(
+      this.dialog
+        .open(DocumentComponent, {
+          disableClose: true,
+          panelClass: 'document-dialog',
+        })
+        .afterClosed()
+    );
+    const documentListOld = this.formGroup.value.documentList || [];
+    const documentList: number[] = [
+      ...new Set([...documentListNew, ...documentListOld]),
+    ];
+    this.formGroup.patchValue({ documentList });
   }
 
   handleReset() {
