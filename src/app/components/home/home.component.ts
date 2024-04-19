@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
-import { NlpRequest } from '../../../core/models/nlp-request';
+import { NlpRequest } from '../../core/models/nlp-request';
 import { NlpAccuracyComponent } from '../nlp-accuracy/nlp-accuracy.component';
 import { NlpResultComponent } from '../nlp-result/nlp-result.component';
 
