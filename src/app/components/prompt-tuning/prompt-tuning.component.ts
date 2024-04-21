@@ -83,7 +83,6 @@ export class PromptTuningComponent {
       }),
       context: new FormControl<string>(this.context, {
         nonNullable: true,
-        validators: [Validators.required],
       }),
       knowledge: new FormControl<string>(this.knowledge, {
         nonNullable: true,
