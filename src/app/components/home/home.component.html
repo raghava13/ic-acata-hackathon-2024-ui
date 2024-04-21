@@ -70,7 +70,7 @@
     </div>
     <div class="action-container">
       <div>
-        <h3>NLP ID: {{ selectNlpId | async }}</h3>
+        <h3>Process ID: {{ selectNlpId | async }}</h3>
       </div>
       <div class="button-container">
         <button
@@ -111,6 +111,7 @@
   </form>
   <div class="result-container">
     <app-nlp-result />
+    <app-nlp-element />
     <app-nlp-accuracy />
   </div>
 </div>

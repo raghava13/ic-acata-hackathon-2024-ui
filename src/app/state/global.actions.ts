@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Document } from '../core/models/document';
 import { NlpAccuracy } from '../core/models/nlp-accuracy';
+import { NLPElement } from '../core/models/nlp-element';
 import { NlpRequest } from '../core/models/nlp-request';
 import { NlpResult } from '../core/models/nlp-result';
 import { PromptRequest } from '../core/models/prompt-request';
@@ -32,6 +33,20 @@ export const getNlpResultSuccess = createAction(
 );
 
 export const getNlpResultFailure = createAction('[NLP] Get NLP Result Failure');
+
+export const getNlpElement = createAction(
+  '[NLP] Get NLP Element',
+  props<{ nlpId: number }>()
+);
+
+export const getNlpElementSuccess = createAction(
+  '[NLP] Get NLP Element Success',
+  props<{ nlpElement: NLPElement[] }>()
+);
+
+export const getNlpElementFailure = createAction(
+  '[NLP] Get NLP Element Failure'
+);
 
 export const getNlpAccuracy = createAction(
   '[NLP] Get NLP Accuracy',

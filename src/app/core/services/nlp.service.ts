@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Document } from '../models/document';
 import { NlpAccuracy } from '../models/nlp-accuracy';
+import { NLPElement } from '../models/nlp-element';
 import { NlpRequest } from '../models/nlp-request';
 import { NlpResult } from '../models/nlp-result';
 import { PromptRequest } from '../models/prompt-request';
@@ -24,6 +25,11 @@ export class NlpService {
   getNlpResult(nlpId: number): Observable<NlpResult[]> {
     const url = `${this.baseURL}/nlp/result/${nlpId}`;
     return this.httpClient.get<NlpResult[]>(url);
+  }
+
+  getNlpElement(nlpId: number): Observable<NLPElement[]> {
+    const url = `${this.baseURL}/nlp/element/${nlpId}`;
+    return this.httpClient.get<NLPElement[]>(url);
   }
 
   getNlpAccuracy(nlpId: number): Observable<NlpAccuracy[]> {

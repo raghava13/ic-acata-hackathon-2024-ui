@@ -12,6 +12,9 @@ import {
   getNlpAccuracyLatestFailure,
   getNlpAccuracyLatestSuccess,
   getNlpAccuracySuccess,
+  getNlpElement,
+  getNlpElementFailure,
+  getNlpElementSuccess,
   getNlpResult,
   getNlpResultFailure,
   getNlpResultSuccess,
@@ -46,6 +49,18 @@ export class GlobalEffects {
         this.nlpService.getNlpResult(nlpId).pipe(
           switchMap((nlpResult) => of(getNlpResultSuccess({ nlpResult }))),
           catchError(() => of(getNlpResultFailure()))
+        )
+      )
+    );
+  });
+
+  getNlpElement = createEffect(() => {
+    return this.actions.pipe(
+      ofType(getNlpElement),
+      switchMap(({ nlpId }) =>
+        this.nlpService.getNlpElement(nlpId).pipe(
+          switchMap((nlpElement) => of(getNlpElementSuccess({ nlpElement }))),
+          catchError(() => of(getNlpElementFailure()))
         )
       )
     );

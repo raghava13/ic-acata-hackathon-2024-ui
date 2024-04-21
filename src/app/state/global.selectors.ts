@@ -19,6 +19,11 @@ export const selectNlpResult = createSelector(
   (state) => state.nlpResult
 );
 
+export const selectNlpElement = createSelector(
+  selectGlobalFeatureState,
+  (state) => state.nlpElement
+);
+
 export const selectNlpAccuracy = createSelector(
   selectGlobalFeatureState,
   (state) => state.nlpAccuracy

@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>NLP Elements</h3>
+  <table mat-table [dataSource]="(selectNlpElement | async) || []">
+    <ng-container matColumnDef="documentId">
+      <th mat-header-cell *matHeaderCellDef>Document ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.documentId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="elementName">
+      <th mat-header-cell *matHeaderCellDef>Element Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.elementName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="groundTruth">
+      <th mat-header-cell *matHeaderCellDef>Ground Truth</th>
+      <td mat-cell *matCellDef="let element">{{ element.groundTruth }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="rawValue">
+      <th mat-header-cell *matHeaderCellDef>NLP Value</th>
+      <td mat-cell *matCellDef="let element">{{ element.rawValue }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

@@ -17,12 +17,14 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { NlpRequest } from '../../core/models/nlp-request';
 import {
   getNlpAccuracy,
+  getNlpElement,
   getNlpResult,
   processNlp,
 } from '../../state/global.actions';
 import { selectNlpId } from '../../state/global.selectors';
 import { DocumentComponent } from '../document/document.component';
 import { NlpAccuracyComponent } from '../nlp-accuracy/nlp-accuracy.component';
+import { NlpElementComponent } from '../nlp-element/nlp-element.component';
 import { NlpResultComponent } from '../nlp-result/nlp-result.component';
 
 @Component({
@@ -40,6 +42,7 @@ import { NlpResultComponent } from '../nlp-result/nlp-result.component';
     NlpAccuracyComponent,
     MatChipsModule,
     MatIconModule,
+    NlpElementComponent,
   ],
 })
 export class HomeComponent {
@@ -67,21 +70,24 @@ export class HomeComponent {
     Knowledge: {knowledge}. 
     Context: {context}`;
 
-    this.knowledge = `Cancer Stage: Cancer stages are Stage IIB, Stage IVA, and return latest stage.
+    // this.knowledge = `Cancer Stage: Cancer stages are Stage IIB, Stage IVA, and return latest stage.
 
-    Radiation Type: Radiation Type is the energy used for treatment (exclude site of treatment like 'lung') with possible values of 6X, 10X, 18X, etc.
-    
-    Site of Biopsy: A biopsy is a procedure where cells or tissue are removed for examination to determine a diagnosis. The site of the biopsy is the anatomical location where the biopsy was performed or the anatomical location where the tissue was removed from.`;
+    // Radiation Type: Radiation Type is the energy used for treatment (exclude site of treatment like 'lung') with possible values of 6X, 10X, 18X, etc.
+
+    // Site of Biopsy: A biopsy is a procedure where cells or tissue are removed for examination to determine a diagnosis. The site of the biopsy is the anatomical location where the biopsy was performed or the anatomical location where the tissue was removed from.`;
+
+    this.knowledge = ``;
 
     // this.userContent = `Extract cancer stage, radiation type, site of biopsy`;
-    this.userContent = `Extract following elements date of biopsy, specimen collection date`;
+    // this.userContent = `Extract following elements date of biopsy, specimen collection date`;
+    this.userContent = `Extract following elements site of biopsy, specimen collection date, test ordered date, test results date, testing company`;
 
     this.formGroup = new FormGroup({
       name: new FormControl<string>('Radiation Test 1', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      documentList: new FormControl<number[]>([736353], {
+      documentList: new FormControl<number[]>([109546], {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -91,7 +97,6 @@ export class HomeComponent {
       }),
       knowledge: new FormControl<string>(this.knowledge, {
         nonNullable: true,
-        validators: [Validators.required],
       }),
       userContent: new FormControl<string>(this.userContent, {
         nonNullable: true,
@@ -162,6 +167,7 @@ export class HomeComponent {
     const nlpId = await firstValueFrom(this.store.select(selectNlpId));
     if (nlpId) {
       this.store.dispatch(getNlpResult({ nlpId }));
+      this.store.dispatch(getNlpElement({ nlpId }));
       this.store.dispatch(getNlpAccuracy({ nlpId }));
     }
   }

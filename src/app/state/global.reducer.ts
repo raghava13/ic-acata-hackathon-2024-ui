@@ -9,6 +9,8 @@ import {
   getNlpAccuracyLatestFailure,
   getNlpAccuracyLatestSuccess,
   getNlpAccuracySuccess,
+  getNlpElementFailure,
+  getNlpElementSuccess,
   getNlpResultFailure,
   getNlpResultSuccess,
   hideSpinner,
@@ -36,6 +38,10 @@ export const gloablReducer = createImmerReducer<GlobalState>(
   }),
   on(processNlp, (state) => {
     state.nlpId = 0;
+    state.nlpResult = [];
+    state.nlpElement = [];
+    state.nlpAccuracy = [];
+    state.nlpAccuracyLatest = [];
     return state;
   }),
   on(processNlpSuccess, (state, { nlpId }) => {
@@ -52,6 +58,14 @@ export const gloablReducer = createImmerReducer<GlobalState>(
   }),
   on(getNlpResultFailure, (state) => {
     state.nlpResult = [];
+    return state;
+  }),
+  on(getNlpElementSuccess, (state, { nlpElement }) => {
+    state.nlpElement = nlpElement;
+    return state;
+  }),
+  on(getNlpElementFailure, (state) => {
+    state.nlpElement = [];
     return state;
   }),
   on(getNlpAccuracySuccess, (state, { nlpAccuracy }) => {
