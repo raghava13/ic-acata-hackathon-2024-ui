@@ -9,7 +9,10 @@ import { MatTableModule } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { NlpAccuracy } from '../../core/models/nlp-accuracy';
-import { getNlpAccuracyLatest } from '../../state/global.actions';
+import {
+  getNlpAccuracyLatest,
+  resetNlpAccuracyLatest,
+} from '../../state/global.actions';
 import { selectNlpAccuracyLatest } from '../../state/global.selectors';
 import { NlpChartComponent } from '../nlp-chart/nlp-chart.component';
 
@@ -93,12 +96,16 @@ export class NlpAccuracyReportComponent {
   handleChange(all: boolean) {
     if (all) {
       this.store.dispatch(getNlpAccuracyLatest({}));
+    } else {
+      this.store.dispatch(resetNlpAccuracyLatest());
     }
   }
 
   handleSelectionChange(elementName: string) {
     if (elementName) {
       this.store.dispatch(getNlpAccuracyLatest({ elementName }));
+    } else {
+      this.store.dispatch(resetNlpAccuracyLatest());
     }
   }
 }

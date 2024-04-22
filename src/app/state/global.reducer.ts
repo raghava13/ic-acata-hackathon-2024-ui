@@ -19,6 +19,7 @@ import {
   processNlpSuccess,
   processPromptFinetuningFailure,
   processPromptFinetuningSuccess,
+  resetNlpAccuracyLatest,
   showSpinner,
 } from './global.actions';
 import { GlobalState } from './global.models';
@@ -81,6 +82,10 @@ export const gloablReducer = createImmerReducer<GlobalState>(
     return state;
   }),
   on(getNlpAccuracyLatestFailure, (state) => {
+    state.nlpAccuracyLatest = [];
+    return state;
+  }),
+  on(getNlpAccuracyLatestFailure, resetNlpAccuracyLatest, (state) => {
     state.nlpAccuracyLatest = [];
     return state;
   }),

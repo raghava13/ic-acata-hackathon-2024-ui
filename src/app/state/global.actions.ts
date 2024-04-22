@@ -67,6 +67,10 @@ export const getNlpAccuracyLatest = createAction(
   props<{ elementName?: string }>()
 );
 
+export const resetNlpAccuracyLatest = createAction(
+  '[NLP] Reset NLP Accuracy Latest'
+);
+
 export const getNlpAccuracyLatestSuccess = createAction(
   '[NLP] Get NLP Accuracy Latest Success',
   props<{ nlpAccuracyLatest: NlpAccuracy[] }>()

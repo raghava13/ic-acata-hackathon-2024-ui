@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, DestroyRef, Input, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { BaseChartDirective } from 'ng2-charts';
 import { selectNlpAccuracyLatest } from '../../state/global.selectors';
@@ -11,6 +12,8 @@ import { selectNlpAccuracyLatest } from '../../state/global.selectors';
   styleUrl: './nlp-chart.component.scss',
 })
 export class NlpChartComponent {
+  private destroyRef = inject(DestroyRef);
+
   @Input({ required: true }) isElement: boolean = false;
 
   data: any = [];
@@ -27,19 +30,32 @@ export class NlpChartComponent {
     );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.store.select(selectNlpAccuracyLatest).subscribe((elements) => {
-      this.data = {
-        labels: elements.map((element) => element.elementName),
-        datasets: [
-          {
-            label: 'Elements Accuracy',
-            backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-            borderColor: documentStyle.getPropertyValue('--pink-500'),
-            data: elements.map((element) => element.accuracy),
-          },
-        ],
-      };
-    });
+    this.store
+      .select(selectNlpAccuracyLatest)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((elements) => {
+        let label = '';
+        let labels: any = [];
+        if (elements.length) {
+          label = this.isElement
+            ? 'Elements Accuracy'
+            : elements[0].elementName + ' Accuracy';
+          labels = this.isElement
+            ? elements.map((element) => element.elementName)
+            : elements.map((element) => element.accuracy);
+        }
+        this.data = {
+          labels,
+          datasets: [
+            {
+              label,
+              backgroundColor: documentStyle.getPropertyValue('--pink-500'),
+              borderColor: documentStyle.getPropertyValue('--pink-500'),
+              data: elements.map((element) => element.accuracy),
+            },
+          ],
+        };
+      });
 
     this.options = {
       maintainAspectRatio: false,
