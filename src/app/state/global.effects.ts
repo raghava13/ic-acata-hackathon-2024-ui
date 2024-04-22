@@ -18,9 +18,6 @@ import {
   getNlpResult,
   getNlpResultFailure,
   getNlpResultSuccess,
-  processNlp,
-  processNlpFailure,
-  processNlpSuccess,
   processPromptFinetuning,
   processPromptFinetuningFailure,
   processPromptFinetuningSuccess,
@@ -29,18 +26,6 @@ import {
 @Injectable()
 export class GlobalEffects {
   constructor(private actions: Actions, private nlpService: NlpService) {}
-
-  processNLP = createEffect(() => {
-    return this.actions.pipe(
-      ofType(processNlp),
-      switchMap(({ request }) =>
-        this.nlpService.processNlp(request).pipe(
-          switchMap((nlpId) => of(processNlpSuccess({ nlpId }))),
-          catchError(() => of(processNlpFailure()))
-        )
-      )
-    );
-  });
 
   getNlpResult = createEffect(() => {
     return this.actions.pipe(

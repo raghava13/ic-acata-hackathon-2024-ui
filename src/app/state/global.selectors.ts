@@ -9,11 +9,6 @@ export const selectSpinner = createSelector(
   (state) => state.spinner
 );
 
-export const selectNlpId = createSelector(
-  selectGlobalFeatureState,
-  (state) => state.nlpId
-);
-
 export const selectNlpResult = createSelector(
   selectGlobalFeatureState,
   (state) => state.nlpResult

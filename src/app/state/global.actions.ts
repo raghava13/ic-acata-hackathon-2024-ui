@@ -2,25 +2,12 @@ import { createAction, props } from '@ngrx/store';
 import { Document } from '../core/models/document';
 import { NlpAccuracy } from '../core/models/nlp-accuracy';
 import { NLPElement } from '../core/models/nlp-element';
-import { NlpRequest } from '../core/models/nlp-request';
 import { NlpResult } from '../core/models/nlp-result';
 import { PromptRequest } from '../core/models/prompt-request';
 
 export const showSpinner = createAction('[Spinner] Show Spinner');
 
 export const hideSpinner = createAction('[Spinner] Hide Spinner');
-
-export const processNlp = createAction(
-  '[NLP] Process NLP',
-  props<{ request: NlpRequest }>()
-);
-
-export const processNlpSuccess = createAction(
-  '[NLP] Process NLP Success',
-  props<{ nlpId: number }>()
-);
-
-export const processNlpFailure = createAction('[NLP] Process NLP Failure');
 
 export const getNlpResult = createAction(
   '[NLP] Get NLP Result',
@@ -104,3 +91,5 @@ export const getDocumentsSuccess = createAction(
 export const getDocumentsFailure = createAction(
   '[Document] Get Documents Failure'
 );
+
+export const resetNlpResult = createAction('[NLP] Reset NLP Result');

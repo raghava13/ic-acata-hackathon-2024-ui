@@ -14,12 +14,10 @@ import {
   getNlpResultFailure,
   getNlpResultSuccess,
   hideSpinner,
-  processNlp,
-  processNlpFailure,
-  processNlpSuccess,
   processPromptFinetuningFailure,
   processPromptFinetuningSuccess,
   resetNlpAccuracyLatest,
+  resetNlpResult,
   showSpinner,
 } from './global.actions';
 import { GlobalState } from './global.models';
@@ -35,22 +33,6 @@ export const gloablReducer = createImmerReducer<GlobalState>(
     if (state.spinner > 0) {
       state.spinner -= 1;
     }
-    return state;
-  }),
-  on(processNlp, (state) => {
-    state.nlpId = 0;
-    state.nlpResult = [];
-    state.nlpElement = [];
-    state.nlpAccuracy = [];
-    state.nlpAccuracyLatest = [];
-    return state;
-  }),
-  on(processNlpSuccess, (state, { nlpId }) => {
-    state.nlpId = nlpId;
-    return state;
-  }),
-  on(processNlpFailure, (state) => {
-    state.nlpId = 0;
     return state;
   }),
   on(getNlpResultSuccess, (state, { nlpResult }) => {
@@ -103,6 +85,13 @@ export const gloablReducer = createImmerReducer<GlobalState>(
   }),
   on(getDocumentsFailure, (state) => {
     state.documents = [];
+    return state;
+  }),
+  on(resetNlpResult, (state) => {
+    state.nlpResult = [];
+    state.nlpElement = [];
+    state.nlpAccuracy = [];
+    state.nlpAccuracyLatest = [];
     return state;
   })
 );

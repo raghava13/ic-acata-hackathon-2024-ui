@@ -22,8 +22,8 @@ import {
   getNlpAccuracy,
   getNlpElement,
   getNlpResult,
+  resetNlpResult,
 } from '../../state/global.actions';
-import { selectNlpId } from '../../state/global.selectors';
 import { DocumentComponent } from '../document/document.component';
 import { NlpAccuracyComponent } from '../nlp-accuracy/nlp-accuracy.component';
 import { NlpElementComponent } from '../nlp-element/nlp-element.component';
@@ -186,8 +186,10 @@ export class HomeComponent {
   }
 
   handleProcess() {
+    this.store.dispatch(resetNlpResult());
     this.logs = [];
     const request = this.formGroup.value as NlpRequest;
+
     this.subject = webSocket('ws://127.0.0.1:8000/nlp/process/ws');
 
     this.subject.subscribe({
@@ -218,8 +220,8 @@ export class HomeComponent {
     this.subject.next(request);
   }
 
-  async handleRefresh() {
-    const nlpId = await firstValueFrom(this.store.select(selectNlpId));
+  handleRefresh() {
+    const nlpId = this.processId;
     if (nlpId) {
       this.store.dispatch(getNlpResult({ nlpId }));
       this.store.dispatch(getNlpElement({ nlpId }));
