@@ -1,5 +1,5 @@
 import { AsyncPipe, KeyValue } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,14 +14,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
-import { Observable, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { NlpRequest } from '../../core/models/nlp-request';
 import { NlpService } from '../../core/services/nlp.service';
 import {
   getNlpAccuracy,
   getNlpElement,
   getNlpResult,
-  processNlp,
 } from '../../state/global.actions';
 import { selectNlpId } from '../../state/global.selectors';
 import { DocumentComponent } from '../document/document.component';
@@ -49,6 +49,8 @@ import { NlpResultComponent } from '../nlp-result/nlp-result.component';
   ],
 })
 export class HomeComponent {
+  subject?: WebSocketSubject<any>;
+
   formGroup: FormGroup<{
     name: FormControl<string>;
     documentList: FormControl<number[]>;
@@ -60,9 +62,13 @@ export class HomeComponent {
     userContent: FormControl<string>;
   }>;
 
-  selectNlpId: Observable<number>;
+  processId: number = 0;
 
   templates: KeyValue<string, string>[];
+
+  logs: string[] = [];
+
+  @ViewChild('log') private logContainer!: ElementRef;
 
   constructor(
     private store: Store,
@@ -103,8 +109,6 @@ export class HomeComponent {
       }),
     });
 
-    this.selectNlpId = this.store.select(selectNlpId);
-
     this.templates = [
       { key: 'default', value: 'Default' },
       { key: 'genetics', value: 'Genetics' },
@@ -112,6 +116,13 @@ export class HomeComponent {
       { key: 'pathology', value: 'Pathology' },
       { key: 'radiation', value: 'Radiation' },
     ];
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.logContainer.nativeElement.scrollTop =
+        this.logContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   handleSelectionChange(template: string) {
@@ -175,8 +186,36 @@ export class HomeComponent {
   }
 
   handleProcess() {
+    this.logs = [];
     const request = this.formGroup.value as NlpRequest;
-    this.store.dispatch(processNlp({ request }));
+    this.subject = webSocket('ws://127.0.0.1:8000/nlp/process/ws');
+
+    this.subject.subscribe({
+      next: (msg: any) => {
+        console.log('message received: ' + msg.message);
+        this.logs.push(msg.message);
+        if (msg.message.indexOf('Process ID Generated') > -1) {
+          this.processId = +msg.message.split(' - ')[1];
+        }
+        if (msg.message.indexOf('Process completed for the Document ID') > -1) {
+          const nlpId = this.processId;
+          this.store.dispatch(getNlpResult({ nlpId }));
+          this.store.dispatch(getNlpElement({ nlpId }));
+        }
+        if (msg.message === 'COMPLETED') {
+          this.subject?.complete();
+          const nlpId = this.processId;
+          this.store.dispatch(getNlpAccuracy({ nlpId }));
+        }
+        setTimeout(() => {
+          this.scrollToBottom();
+        });
+      },
+      error: (err) => console.log(err),
+      complete: () => console.log('complete'),
+    });
+
+    this.subject.next(request);
   }
 
   async handleRefresh() {

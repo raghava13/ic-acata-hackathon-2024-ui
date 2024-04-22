@@ -1,3 +1,5 @@
+@use "../../../theme/color-variables.scss" as c;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -44,4 +46,14 @@
 
 .search-button {
   width: 7rem;
+}
+
+.log-container {
+  padding: 0.25rem;
+  height: 10rem;
+  overflow-y: scroll;
+  background-color: c.$ic-black;
+  color: c.$ic-white;
+  font-family: monospace;
+  font-size: 1rem;
 }
