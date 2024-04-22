@@ -125,12 +125,20 @@
       <div>
         <h3>Process ID: {{ processId }}</h3>
       </div>
+      <div>
+        @if(processId > 0) {
+        <h3>
+          {{ completed ? "Processed" : "Processing" }}
+          {{ partiallyCompleted }} of {{ formGroup.value.documentList?.length }}
+        </h3>
+        }
+      </div>
       <div class="button-container">
         <button
           type="submit"
           mat-stroked-button
           color="primary"
-          [disabled]="!formGroup.valid"
+          [disabled]="!formGroup.valid || processing"
         >
           Process
         </button>
@@ -139,6 +147,7 @@
           mat-stroked-button
           color="accent"
           (click)="handleReset()"
+          [disabled]="processing"
         >
           Reset
         </button>
@@ -147,6 +156,7 @@
           mat-stroked-button
           color="warn"
           (click)="handleClear()"
+          [disabled]="processing"
         >
           Clear
         </button>
@@ -155,7 +165,7 @@
           mat-flat-button
           color="primary"
           (click)="handleRefresh()"
-          [disabled]="processId == 0"
+          [disabled]="!completed"
         >
           Refresh
         </button>

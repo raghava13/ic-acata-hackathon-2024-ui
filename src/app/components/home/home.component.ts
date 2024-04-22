@@ -69,6 +69,10 @@ export class HomeComponent {
 
   logs: string[] = [];
 
+  partiallyCompleted = 1;
+  completed = false;
+  processing = false;
+
   @ViewChild('log') private logContainer!: ElementRef;
 
   constructor(
@@ -190,8 +194,11 @@ export class HomeComponent {
   }
 
   handleProcess() {
+    this.processing = true;
     this.store.dispatch(resetNlpResult());
     this.logs = [];
+    this.partiallyCompleted = 0;
+    this.completed = false;
     const request = this.formGroup.value as NlpRequest;
 
     this.subject = webSocket('ws://127.0.0.1:8000/nlp/process/ws');
@@ -203,12 +210,17 @@ export class HomeComponent {
         if (msg.message.indexOf('Process ID Generated') > -1) {
           this.processId = +msg.message.split(' - ')[1];
         }
+        if (msg.message.indexOf('Process started for the Document ID') > -1) {
+          this.partiallyCompleted += 1;
+        }
         if (msg.message.indexOf('Process completed for the Document ID') > -1) {
           const nlpId = this.processId;
           this.store.dispatch(getNlpResult({ nlpId }));
           this.store.dispatch(getNlpElement({ nlpId }));
         }
         if (msg.message === 'COMPLETED') {
+          this.completed = true;
+          this.processing = false;
           this.subject?.complete();
           const nlpId = this.processId;
           this.store.dispatch(getNlpAccuracy({ nlpId }));
