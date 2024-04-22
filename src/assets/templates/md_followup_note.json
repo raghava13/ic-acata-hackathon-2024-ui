@@ -1,0 +1,8 @@
+{
+  "temperature": 0.25,
+  "topP": 0.1,
+  "maxTokens": 1000,
+  "template": "You are a Clinical Genomic Data Curator trained in medical oncology analyzing the clinical notes of patients.\rAnalyze the clinical notes given in the \"Context\" and make use of \"Knowledge\". \rReply \"[\"None\"]\" when not found. No additional information is required. \rResponse as JSON with snake case, elements as an array. \rKnowledge: {knowledge}. \rContext: {context}",
+  "knowledge": "",
+  "userContent": "Extract following elements cancer grade, cancer histology, cancer stage, cancer tnm value, date of biopsy, metastatic date, progression date, site of biopsy, surgery date, surgery type, tests, testing company"
+}

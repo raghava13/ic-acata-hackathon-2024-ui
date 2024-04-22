@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, KeyValue } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   FormControl,
@@ -12,9 +12,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { Observable, firstValueFrom } from 'rxjs';
 import { NlpRequest } from '../../core/models/nlp-request';
+import { NlpService } from '../../core/services/nlp.service';
 import {
   getNlpAccuracy,
   getNlpElement,
@@ -43,6 +45,7 @@ import { NlpResultComponent } from '../nlp-result/nlp-result.component';
     MatChipsModule,
     MatIconModule,
     NlpElementComponent,
+    MatSelectModule,
   ],
 })
 export class HomeComponent {
@@ -57,36 +60,17 @@ export class HomeComponent {
     userContent: FormControl<string>;
   }>;
 
-  template: string;
-
-  knowledge: string;
-
-  userContent: string;
-
   selectNlpId: Observable<number>;
 
-  constructor(private store: Store, private dialog: MatDialog) {
-    this.template = `You are a Clinical Genomic Data Curator trained in medical oncology analyzing the clinical notes of patients. 
-    Analyze the clinical notes given in the "Context" and make use of "Knowledge". 
-    Reply "["None"]" when not found. No additional information is required. 
-    Response as JSON with snake case, elements as an array. 
-    Knowledge: {knowledge}. 
-    Context: {context}`;
+  templates: KeyValue<string, string>[];
 
-    // this.knowledge = `Cancer Stage: Cancer stages are Stage IIB, Stage IVA, and return latest stage.
-
-    // Radiation Type: Radiation Type is the energy used for treatment (exclude site of treatment like 'lung') with possible values of 6X, 10X, 18X, etc.
-
-    // Site of Biopsy: A biopsy is a procedure where cells or tissue are removed for examination to determine a diagnosis. The site of the biopsy is the anatomical location where the biopsy was performed or the anatomical location where the tissue was removed from.`;
-
-    this.knowledge = ``;
-
-    // this.userContent = `Extract cancer stage, radiation type, site of biopsy`;
-    // this.userContent = `Extract following elements date of biopsy, specimen collection date`;
-    this.userContent = `Extract following elements site of biopsy, specimen collection date, test ordered date, test results date, testing company`;
-
+  constructor(
+    private store: Store,
+    private dialog: MatDialog,
+    private nlpService: NlpService
+  ) {
     this.formGroup = new FormGroup({
-      name: new FormControl<string>('Radiation Test 1', {
+      name: new FormControl<string>('Test 1', {
         nonNullable: true,
         validators: [Validators.required],
       }),
@@ -94,40 +78,46 @@ export class HomeComponent {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      temperature: new FormControl<number>(0.25, {
-        nonNullable: true,
-        validators: [
-          Validators.required,
-          Validators.min(0.1),
-          Validators.max(1.0),
-        ],
-      }),
-      topP: new FormControl<number>(0.1, {
-        nonNullable: true,
-        validators: [
-          Validators.required,
-          Validators.min(0.1),
-          Validators.max(1.0),
-        ],
-      }),
-      maxTokens: new FormControl<number>(1000, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.min(1)],
-      }),
-      template: new FormControl<string>(this.template, {
+      temperature: new FormControl<number>(0, {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      knowledge: new FormControl<string>(this.knowledge, {
+      topP: new FormControl<number>(0, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      maxTokens: new FormControl<number>(0, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(1)],
+      }),
+      template: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      knowledge: new FormControl<string>('', {
         nonNullable: true,
       }),
-      userContent: new FormControl<string>(this.userContent, {
+      userContent: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
     });
 
     this.selectNlpId = this.store.select(selectNlpId);
+
+    this.templates = [
+      { key: 'default', value: 'Default' },
+      { key: 'genetics', value: 'Genetics' },
+      { key: 'md_followup_note', value: 'MD Followup Note' },
+      { key: 'pathology', value: 'Pathology' },
+      { key: 'radiation', value: 'Radiation' },
+    ];
+  }
+
+  handleSelectionChange(template: string) {
+    this.nlpService.loadTemplate(template).subscribe((formValues) => {
+      this.formGroup.patchValue({ ...formValues });
+    });
   }
 
   removeDocumentId(documentId: number) {

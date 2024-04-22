@@ -52,4 +52,9 @@ export class NlpService {
     const url = `${this.baseURL}/document`;
     return this.httpClient.get<Document[]>(url);
   }
+
+  loadTemplate(template: string) {
+    let url = `/assets/templates/${template}.json`;
+    return this.httpClient.get<PromptRequest>(url);
+  }
 }
