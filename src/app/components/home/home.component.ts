@@ -49,6 +49,9 @@ export class HomeComponent {
   formGroup: FormGroup<{
     name: FormControl<string>;
     documentList: FormControl<number[]>;
+    temperature: FormControl<number>;
+    topP: FormControl<number>;
+    maxTokens: FormControl<number>;
     template: FormControl<string>;
     knowledge: FormControl<string>;
     userContent: FormControl<string>;
@@ -90,6 +93,26 @@ export class HomeComponent {
       documentList: new FormControl<number[]>([109546], {
         nonNullable: true,
         validators: [Validators.required],
+      }),
+      temperature: new FormControl<number>(0.25, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.min(0.1),
+          Validators.max(1.0),
+        ],
+      }),
+      topP: new FormControl<number>(0.1, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.min(0.1),
+          Validators.max(1.0),
+        ],
+      }),
+      maxTokens: new FormControl<number>(1000, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(1)],
       }),
       template: new FormControl<string>(this.template, {
         nonNullable: true,
@@ -152,6 +175,9 @@ export class HomeComponent {
     this.formGroup.patchValue({
       name: '',
       documentList: [],
+      temperature: 0,
+      topP: 0,
+      maxTokens: 0,
       template: '',
       knowledge: '',
       userContent: '',

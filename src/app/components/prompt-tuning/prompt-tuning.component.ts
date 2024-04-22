@@ -40,6 +40,9 @@ import { NlpResultComponent } from '../nlp-result/nlp-result.component';
 })
 export class PromptTuningComponent {
   formGroup: FormGroup<{
+    temperature: FormControl<number>;
+    topP: FormControl<number>;
+    maxTokens: FormControl<number>;
     template: FormControl<string>;
     context: FormControl<string>;
     knowledge: FormControl<string>;
@@ -77,6 +80,26 @@ export class PromptTuningComponent {
     this.userContent = `Optimize given prompt`;
 
     this.formGroup = new FormGroup({
+      temperature: new FormControl<number>(0.25, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.min(0.1),
+          Validators.max(1.0),
+        ],
+      }),
+      topP: new FormControl<number>(0.1, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.min(0.1),
+          Validators.max(1.0),
+        ],
+      }),
+      maxTokens: new FormControl<number>(1000, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(1)],
+      }),
       template: new FormControl<string>(this.template, {
         nonNullable: true,
         validators: [Validators.required],
@@ -102,6 +125,9 @@ export class PromptTuningComponent {
 
   handleClear() {
     this.formGroup.patchValue({
+      temperature: 0,
+      topP: 0,
+      maxTokens: 0,
       template: '',
       context: '',
       knowledge: '',
