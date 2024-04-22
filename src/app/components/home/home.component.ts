@@ -17,6 +17,7 @@ import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 import { NlpRequest } from '../../core/models/nlp-request';
+import { PromptRequest } from '../../core/models/prompt-request';
 import { NlpService } from '../../core/services/nlp.service';
 import {
   getNlpAccuracy,
@@ -75,7 +76,18 @@ export class HomeComponent {
     private dialog: MatDialog,
     private nlpService: NlpService
   ) {
-    this.formGroup = new FormGroup({
+    this.formGroup = this.createFormGroup();
+    this.templates = [
+      { key: 'default', value: 'Default' },
+      { key: 'genetics', value: 'Genetics' },
+      { key: 'md_followup_note', value: 'MD Followup Note' },
+      { key: 'pathology', value: 'Pathology' },
+      { key: 'radiation', value: 'Radiation' },
+    ];
+  }
+
+  createFormGroup(formValue?: PromptRequest) {
+    return new FormGroup({
       name: new FormControl<string>('Test 1', {
         nonNullable: true,
         validators: [Validators.required],
@@ -84,38 +96,30 @@ export class HomeComponent {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      temperature: new FormControl<number>(0, {
+      temperature: new FormControl<number>(formValue?.temperature || 0, {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      topP: new FormControl<number>(0, {
+      topP: new FormControl<number>(formValue?.topP || 0, {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      maxTokens: new FormControl<number>(0, {
+      maxTokens: new FormControl<number>(formValue?.maxTokens || 0, {
         nonNullable: true,
         validators: [Validators.required, Validators.min(1)],
       }),
-      template: new FormControl<string>('', {
+      template: new FormControl<string>(formValue?.template || '', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      knowledge: new FormControl<string>('', {
+      knowledge: new FormControl<string>(formValue?.knowledge || '', {
         nonNullable: true,
       }),
-      userContent: new FormControl<string>('', {
+      userContent: new FormControl<string>(formValue?.userContent || '', {
         nonNullable: true,
         validators: [Validators.required],
       }),
     });
-
-    this.templates = [
-      { key: 'default', value: 'Default' },
-      { key: 'genetics', value: 'Genetics' },
-      { key: 'md_followup_note', value: 'MD Followup Note' },
-      { key: 'pathology', value: 'Pathology' },
-      { key: 'radiation', value: 'Radiation' },
-    ];
   }
 
   scrollToBottom(): void {
@@ -127,7 +131,7 @@ export class HomeComponent {
 
   handleSelectionChange(template: string) {
     this.nlpService.loadTemplate(template).subscribe((formValues) => {
-      this.formGroup.patchValue({ ...formValues });
+      this.formGroup = this.createFormGroup(formValues);
     });
   }
 
