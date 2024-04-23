@@ -166,6 +166,8 @@ export class HomeComponent {
         .open(DocumentComponent, {
           disableClose: true,
           panelClass: 'document-dialog',
+          height: '50rem',
+          width: '80rem',
         })
         .afterClosed()
     );

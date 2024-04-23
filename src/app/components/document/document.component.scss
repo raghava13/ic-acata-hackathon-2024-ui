@@ -1,7 +1,19 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-width: 80%;
-  min-height: 80%;
   padding: 1.5rem;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.header {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.mat-mdc-dialog-content {
+  padding: 0;
+  margin: 0 1.5rem 1.5rem;
 }
