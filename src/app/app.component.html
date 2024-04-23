@@ -1,31 +1,33 @@
-<mat-toolbar>
-  <a class="ic-logo">
-    <img src="assets/images/logo.png" alt="Integra Connect" />
-  </a>
-  <a class="app-name multicolor-text" [routerLink]="['home']"
-    >IC ACATA HACKATHON 2024</a
-  >
-  <span class="name">Prompt Playground</span>
-  <span class="example-spacer"></span>
-  <button
-    mat-icon-button
-    class="example-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
-    title="Accuracy Report"
-    [routerLink]="['report']"
-  >
-    <mat-icon>summarize</mat-icon>
-  </button>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with share icon"
-    title="Prompt Fine-tune"
-    [routerLink]="['prompt']"
-  >
-    <mat-icon>tune</mat-icon>
-  </button>
-</mat-toolbar>
 <div class="container">
-  <router-outlet />
+  <mat-toolbar>
+    <a class="ic-logo">
+      <img src="assets/images/logo.png" alt="Integra Connect" />
+    </a>
+    <a class="app-name multicolor-text" [routerLink]="['home']"
+      >IC ACATA HACKATHON 2024</a
+    >
+    <span class="name">Prompt Playground</span>
+    <span class="example-spacer"></span>
+    <button
+      mat-icon-button
+      class="example-icon favorite-icon"
+      aria-label="Example icon-button with heart icon"
+      title="Accuracy Report"
+      [routerLink]="['report']"
+    >
+      <mat-icon>summarize</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with share icon"
+      title="Prompt Fine-tune"
+      [routerLink]="['prompt']"
+    >
+      <mat-icon>tune</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="content-container">
+    <router-outlet />
+  </div>
 </div>

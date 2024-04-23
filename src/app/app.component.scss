@@ -44,7 +44,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  height: 100%;
 }
 
 .mat-icon {
@@ -58,4 +58,12 @@
   font-weight: bold;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.5rem;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  overflow: auto;
 }
