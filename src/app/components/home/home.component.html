@@ -175,7 +175,15 @@
   <h3>Server Logs:</h3>
   <div #log class="log-container">
     @for (log of logs; track log) {
-    <p>{{ log }}</p>
+    <div>
+      @if (log.type === 'info') {
+      <p class="info">{{ log.message }}</p>
+      } @else if (log.type === 'success') {
+      <p class="success">{{ log.message }}</p>
+      } @else if (log.type === 'error') {
+      <p class="error">{{ log.message }}</p>
+      }
+    </div>
     }
   </div>
   <div class="result-container">

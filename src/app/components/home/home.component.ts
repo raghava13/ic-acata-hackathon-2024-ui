@@ -67,7 +67,7 @@ export class HomeComponent {
 
   templates: KeyValue<string, string>[];
 
-  logs: string[] = [];
+  logs: { type: string; message: string }[] = [];
 
   partiallyCompleted = 1;
   completed = false;
@@ -96,10 +96,13 @@ export class HomeComponent {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      documentList: new FormControl<number[]>([109546], {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
+      documentList: new FormControl<number[]>(
+        [109546, 711908, 711920, 714549, 730214, 730831],
+        {
+          nonNullable: true,
+          validators: [Validators.required],
+        }
+      ),
       temperature: new FormControl<number>(formValue?.temperature || 0, {
         nonNullable: true,
         validators: [Validators.required],
@@ -208,23 +211,20 @@ export class HomeComponent {
     this.subject.subscribe({
       next: (msg: any) => {
         console.log('message received: ' + msg.message);
-        this.logs.push(msg.message);
+        this.logs.push(msg);
         if (msg.message.indexOf('Process ID Generated') > -1) {
           this.processId = +msg.message.split(' - ')[1];
         }
         if (msg.message.indexOf('Process started for the Document ID') > -1) {
           this.partiallyCompleted += 1;
         }
-        if (msg.message.indexOf('Process completed for the Document ID') > -1) {
-          const nlpId = this.processId;
-          this.store.dispatch(getNlpResult({ nlpId }));
-          this.store.dispatch(getNlpElement({ nlpId }));
-        }
         if (msg.message === 'COMPLETED') {
           this.completed = true;
           this.processing = false;
           this.subject?.complete();
           const nlpId = this.processId;
+          this.store.dispatch(getNlpResult({ nlpId }));
+          this.store.dispatch(getNlpElement({ nlpId }));
           this.store.dispatch(getNlpAccuracy({ nlpId }));
         }
         setTimeout(() => {
